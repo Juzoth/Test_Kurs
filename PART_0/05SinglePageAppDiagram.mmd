@@ -1,0 +1,29 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa
+    activate server
+    server-->>browser: HTML document (SPA structure)
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    activate server
+    server-->>browser: CSS file (styles for SPA)
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
+    activate server
+    server-->>browser: JavaScript file (SPA logic)
+    deactivate server
+
+    Note right of browser: The browser starts executing the JavaScript code that controls the SPA functionality
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: JSON data of notes (list of notes)
+    deactivate server
+
+    Note right of browser: The browser dynamically renders the notes based on the fetched JSON data
+
+    Note right of browser: The app is now ready, and future interactions (e.g., creating new notes) won't reload the page

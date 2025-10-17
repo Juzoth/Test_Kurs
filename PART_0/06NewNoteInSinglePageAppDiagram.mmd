@@ -1,0 +1,17 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    browser->>browser: User writes in the text field
+    browser->>browser: User clicks the Save button
+
+    Note right of browser: JavaScript captures the input and creates a note object with content and timestamp
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    Note right of server: Request body contains the new note in JSON format
+
+    activate server
+    server-->>browser: Response confirming note received (e.g. status 201 Created)
+    deactivate server
+
+    Note right of browser: The browser updates the notes list in memory and re-renders the view without reloading the page

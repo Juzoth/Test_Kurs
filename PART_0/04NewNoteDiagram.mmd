@@ -1,0 +1,20 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    browser->>browser: User writes in the text field
+    browser->>browser: User clicks the Save button
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/notes
+    Note right of server: The request contains the new note's content in the body
+
+    activate server
+    server-->>browser: Confirmation of the new note creation (e.g., status code 201)
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: Updated JSON data with the new note
+    deactivate server
+
+    Note right of browser: The browser executes the callback function that renders the updated list of notes
