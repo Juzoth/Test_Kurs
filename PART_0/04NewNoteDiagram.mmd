@@ -6,15 +6,40 @@ sequenceDiagram
     browser->>browser: User clicks the Save button
 
     browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/notes
-    Note right of server: The request contains the new note's content in the body
+    Note right of server: Request body contains the new note's content
 
     activate server
     server-->>browser: Confirmation of the new note creation (e.g., status code 201)
     deactivate server
 
-    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes.html
     activate server
-    server-->>browser: Updated JSON data with the new note
+    server-->>browser: Notes document in html
     deactivate server
 
-    Note right of browser: The browser executes the callback function that renders the updated list of notes
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    activate server
+    server-->>browser: Main styles in css
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
+    activate server
+    server-->>browser: Main file in js
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: JSON data (updated)
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: JSON data (updated)
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/favicon.ico
+    activate server
+    server-->>browser: Small icon image
+    deactivate server
+
+    Note right of browser: Browser executes the callback to render the updated list of notes
