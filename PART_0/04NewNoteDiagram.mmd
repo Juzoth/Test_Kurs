@@ -32,11 +32,6 @@ sequenceDiagram
     server-->>browser: JSON data (updated)
     deactivate server
 
-    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
-    activate server
-    server-->>browser: JSON data (updated)
-    deactivate server
-
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/favicon.ico
     activate server
     server-->>browser: Small icon image
