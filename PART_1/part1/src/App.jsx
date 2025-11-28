@@ -24,6 +24,7 @@ const Total = ({ parts }) => {
 };
 
 const App = () => {
+  console.log("Console goes brrrr!"); 
   const course = {
     name: 'Half Stack application development',
     parts: [
