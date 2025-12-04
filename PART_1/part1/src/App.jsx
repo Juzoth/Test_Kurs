@@ -11,28 +11,6 @@ const Komenda2 = () => {
   return console.log("excercises 1.6 - 1.11"); 
 };
 
-const Header = ({ courseName }) => {
-  return <h1>{courseName}</h1>;
-};
-
-const Part = ({ name, exercises }) => (
-  <p>
-    {name} {exercises}
-  </p>
-);
-
-const Content = ({ parts }) => (
-  <div>
-    {parts.map((part, index) => (
-      <Part key={index} name={part.name} exercises={part.exercises} />
-    ))}
-  </div>
-);
-
-const Total = ({ parts }) => {
-  const totalExercises = parts.reduce((sum, part) => sum + part.exercises, 0);
-  return <p>Number of exercises {totalExercises}</p>;
-};
 
 const Button = ({ onClick, text }) => (
   <button onClick={onClick}>{text}</button>
