@@ -17,10 +17,10 @@ const Content = ({ parts }) => (
 );
 
 const Course = ({ course }) => {
-  const totalExercises = course.parts.reduce(
-    (sum, part) => sum + part.exercises,
-    0
-  );
+  const totalExercises = course.parts.reduce((sum, part) => {
+    console.log('Wszystkie:', sum, 'dodaje part:', part.name, 'part ma', part.exercises);
+    return sum + part.exercises;
+  }, 0);
 
   return (
     <div>
