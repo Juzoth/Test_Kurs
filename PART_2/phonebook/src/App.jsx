@@ -12,7 +12,8 @@ const App = () => {
 
   const addPerson = () => {
     if (newName.trim() === '') {
-      console.log("Name can't be empty")
+      window.alert("Name can't be empty");
+      console.log("Name can't be empty");
       return
     }
     if (persons.some(person => person.name === newName)) {
