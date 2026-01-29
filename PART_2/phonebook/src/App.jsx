@@ -15,6 +15,11 @@ const App = () => {
       console.log("Name can't be empty")
       return
     }
+    if (persons.some(person => person.name === newName)) {
+      window.alert(`"${newName}" is already added to phonebook`);
+      console.log(`"${newName}" is already added to phonebook`);
+      return
+    }
     const newPerson = { name: newName }
     setPersons(persons.concat(newPerson))
     console.log(`Added: ${newName}`)
