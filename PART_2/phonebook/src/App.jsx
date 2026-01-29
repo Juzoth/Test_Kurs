@@ -10,7 +10,7 @@ const App = () => {
 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
-  const [searchTerm, setSearchTerm] = useState('') // State for search
+  const [searchTerm, setSearchTerm] = useState('')
 
   const handleNameChange = (event) => {
     setNewName(event.target.value)
@@ -42,7 +42,6 @@ const App = () => {
     setNewNumber('')
   }
 
-  // Filter persons based on search term (case-insensitive)
   const filteredPersons = persons.filter(person =>
     person.name.toLowerCase().includes(searchTerm.toLowerCase())
   )
@@ -81,7 +80,7 @@ const App = () => {
           <li key={person.id}>{person.name} {person.number}</li>
         ))}
       </ul>
-      
+
     </div>
   )
 }
