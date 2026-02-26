@@ -1,10 +1,13 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+
 
 const Filter = ({ searchTerm, handleSearchChange }) => (
   <div>
     Search: <input value={searchTerm} onChange={handleSearchChange} />
   </div>
 );
+
 
 const PersonForm = ({
   newName,
@@ -35,7 +38,11 @@ const Persons = ({ persons }) => (
   </ul>
 );
 
+
+
+
 const App = () => {
+
   const [persons, setPersons] = useState([
     { name: 'Arto Hellas', number: '040-123456', id: 1 },
     { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
@@ -46,6 +53,19 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
+
+
+  useEffect(() => {
+    console.log('effect')
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log('promise fulfilled')
+        console.log(response.data)
+        setPersons(response.data)
+      })
+  }, [])
+  console.log('render', persons.length, 'persons')
 
   const handleNameChange = (event) => {
     setNewName(event.target.value)
