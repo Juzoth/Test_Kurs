@@ -15,3 +15,12 @@ Content-Type: application/json
   "name": "John Doe",
   "number": "555-1234"
 }
+
+### Add another person 
+POST https://phonebook-backend-wwpx.onrender.com/api/persons
+Content-Type: application/json
+
+{
+  "name": "Filip G",
+  "number": "123-456-789"
+}

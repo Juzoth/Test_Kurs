@@ -1,6 +1,11 @@
 import express from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const app = express()
 
@@ -10,6 +15,9 @@ app.use(express.json())
 app.use(cors())
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
+
+// Serve static files from dist folder
+app.use(express.static('dist'))
 
 const persons = [
   {
@@ -95,18 +103,9 @@ app.get('/info', (req, res) => {
   `)
 })
 
-app.get('/', (req, res) => {
-  res.send(`
-    <h1>Phonebook API</h1>
-    <h2>Available Endpoints:</h2>
-    <ul>
-      <li><strong>GET</strong> /api/persons - Get all phonebook entries</li>
-      <li><strong>GET</strong> /api/persons/:id - Get a specific person by ID</li>
-      <li><strong>POST</strong> /api/persons - Add a new person (requires name and number)</li>
-      <li><strong>DELETE</strong> /api/persons/:id - Delete a person by ID</li>
-      <li><strong>GET</strong> /info - Get phonebook statistics</li>
-    </ul>
-  `)
+// Serve index.html for all unmatched routes (SPA)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'))
 })
 
 const PORT = process.env.PORT || 3001
