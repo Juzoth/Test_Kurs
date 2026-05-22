@@ -104,7 +104,7 @@ app.get('/info', (req, res) => {
 })
 
 // Serve index.html for all unmatched routes (SPA)
-app.get('*', (req, res) => {
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'))
 })
 
