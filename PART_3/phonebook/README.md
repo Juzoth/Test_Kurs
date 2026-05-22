@@ -4,7 +4,7 @@ A full-stack phonebook application built with React, Express, and Node.js.
 
 ## Backend Deployment
 
-**Live Backend URL:** `https://your-app-name.onrender.com`
+**Live Backend URL:** `https://phonebook-backend-wwpx.onrender.com`
 
 ### API Endpoints
 
@@ -18,15 +18,15 @@ A full-stack phonebook application built with React, Express, and Node.js.
 
 ```bash
 # Get all persons
-curl https://your-app-name.onrender.com/api/persons
+curl https://phonebook-backend-wwpx.onrender.com/api/persons
 
 # Add a new person
-curl -X POST https://your-app-name.onrender.com/api/persons \
+curl -X POST https://phonebook-backend-wwpx.onrender.com/api/persons \
   -H "Content-Type: application/json" \
   -d '{"name":"John Doe","number":"555-1234"}'
 
 # Delete a person
-curl -X DELETE https://your-app-name.onrender.com/api/persons/1
+curl -X DELETE https://phonebook-backend-wwpx.onrender.com/api/persons/1
 ```
 
 ## Local Development
