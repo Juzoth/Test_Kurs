@@ -3,11 +3,37 @@ import morgan from 'morgan'
 import cors from 'cors'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import mongoose from 'mongoose'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const app = express()
+
+// MongoDB Connection
+const mongoUrl = process.env.MONGODB_URI || 'mongodb+srv://phonebook_user:password@phonebook.oe8giop.mongodb.net/?appName=Phonebook'
+
+mongoose.connect(mongoUrl)
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.log('MongoDB connection error:', err))
+
+// Define Person Schema
+const personSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  number: {
+    type: String,
+    required: true
+  }
+})
+
+const Person = mongoose.model('Person', personSchema)
 
 morgan.token('body', (req) => JSON.stringify(req.body))
 
@@ -19,29 +45,25 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :b
 // Serve static files from dist folder
 app.use(express.static('dist'))
 
-const persons = [
-  {
-    id: '1',
-    name: 'Arto Hellas',
-    number: '040-123456'
-  },
-  {
-    id: '2',
-    name: 'Ada Lovelace',
-    number: '39-44-5323523'
-  },
-  {
-    id: '3',
-    name: 'Dan Abramov',
-    number: '12-43-234345'
-  },
-  {
-    id: '4',
-    name: 'Mary Poppendieck',
-    number: '39-23-6423122'
-  }
-]
+// GET all persons
+app.get('/api/persons', (req, res) => {
+  Person.find({}).then(persons => {
+    res.json(persons)
+  })
+})
 
+// GET specific person
+app.get('/api/persons/:id', (req, res) => {
+  Person.findById(req.params.id).then(person => {
+    if (person) {
+      res.json(person)
+    } else {
+      res.status(404).end()
+    }
+  })
+})
+
+// POST new person
 app.post('/api/persons', (req, res) => {
   const { name, number } = req.body
 
@@ -53,54 +75,36 @@ app.post('/api/persons', (req, res) => {
     return res.status(400).json({ error: 'number is required' })
   }
 
-  if (persons.some(p => p.name === name)) {
-    return res.status(409).json({ error: 'name must be unique' })
-  }
+  const person = new Person({ name, number })
 
-  const newPerson = {
-    id: String(Math.floor(Math.random() * 1000000)),
-    name,
-    number
-  }
-
-  persons.push(newPerson)
-  res.status(201).json(newPerson)
+  person.save().then(savedPerson => {
+    res.status(201).json(savedPerson)
+  }).catch(err => {
+    if (err.code === 11000) {
+      res.status(409).json({ error: 'name must be unique' })
+    } else {
+      res.status(400).json({ error: err.message })
+    }
+  })
 })
 
+// DELETE person
 app.delete('/api/persons/:id', (req, res) => {
-  const id = String(req.params.id);
-  const index = persons.findIndex(p => p.id === id);
-  
-  if (index !== -1) {
-    persons.splice(index, 1);
-    res.status(204).end();
-  } else {
-    res.status(404).json({ error: 'Person not found' });
-  }
-});
-
-app.get('/api/persons/:id', (req, res) => {
-  const id = String(req.params.id);
-  const person = persons.find(p => p.id === id);
-  
-  if (person) {
-    res.json(person);
-  } else {
-    res.status(404).end();
-  }
-});
-
-app.get('/api/persons', (req, res) => {
-  res.json(persons)
+  Person.findByIdAndDelete(req.params.id).then(() => {
+    res.status(204).end()
+  }).catch(err => {
+    res.status(404).json({ error: 'Person not found' })
+  })
 })
 
 app.get('/info', (req, res) => {
-  const currentTime = new Date().toString()
-  const count = persons.length
-  res.send(`
-    <p>Phonebook has info for ${count} people</p>
-    <p>${currentTime}</p>
-  `)
+  Person.countDocuments({}).then(count => {
+    const currentTime = new Date().toString()
+    res.send(`
+      <p>Phonebook has info for ${count} people</p>
+      <p>${currentTime}</p>
+    `)
+  })
 })
 
 // Serve index.html for all unmatched routes (SPA)
